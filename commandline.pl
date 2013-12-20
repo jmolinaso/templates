@@ -23,6 +23,7 @@ pod2usage({
 	-verbose => 1
 	}) unless ($string);
 
+
 # The main code here
 
 __END__
@@ -34,5 +35,17 @@ commandline: template for creating command line with perl scripts
 =head1 SYNOPSYS
 
 Add here the information that would show the help
+
+commandline.pl [-s string] [-n num] [-w] [-c|-cc]
+
+Options:
+    -s, --string    String option
+    -n, --number    Number option
+    -w, --switch    Switch setting
+    -c, -cc         Cumulative option
+
+=head1 Author
+
+Julio Molina Soler <j.molina@telenet.be>
 
 =cut
