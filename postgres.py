@@ -5,6 +5,7 @@ import psycopg2
 import os
 import argparse
 
+
 class DBPostgress:
 	"""Class to connect to a postgreSQL and register to recieve notifications
 	"""
