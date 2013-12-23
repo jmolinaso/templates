@@ -3,6 +3,10 @@
 use strict;
 use Config::File;
 use Pod::Usage;
+use Log::Log4perl qw(:levels);
+use Log::Log4perl::CommandLine ':all',
+    ':loginit' => [{level => $INFO,
+		    layout => '%d{ISO8601} [%p] [%F{1}:%L] %m%n'}];
 use Getopt::Long qw(:config bundling auto_version auto_help);
 $main::VERSION = 1.0;		# Define version of current script
 
@@ -29,8 +33,13 @@ pod2usage({
 	-verbose => 1
 	}) unless ($string);
 
-
+# Init the logger
+my $logger = Log::Log4perl->get_logger();
 # The main code here
+$logger->info("Starting $0");
+
+
+$logger->info("End $0");
 
 __END__
 
@@ -42,9 +51,13 @@ commandline: template for creating command line with perl scripts
 
 Add here the information that would show the help
 
-commandline.pl [-s string] [-n num] [-w] [-c|-cc]
+commandline.pl [-s string] [-n num] [-w] [-c|-cc] [-d|-v|-q]
 
 Options:
+	
+    -d, --debug     Show debug level
+    -v, --verbose   Show info level
+    -q, --quiet     Supress all log information
     -s, --string    String option
     -n, --number    Number option
     -w, --switch    Switch setting
