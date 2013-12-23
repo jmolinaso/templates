@@ -1,6 +1,7 @@
 #!perl
 
 use strict;
+use Config::File;
 use Pod::Usage;
 use Getopt::Long qw(:config bundling auto_version auto_help);
 $main::VERSION = 1.0;		# Define version of current script
@@ -9,13 +10,18 @@ my $string;
 my $number;
 my $switch;
 my $cumulative;
+my $config_file;
+my $config_hash;
 
 GetOptions(
 	"s|string=s" => \$string,
 	"n|number=i" => \$number,
 	"w|switch"  => \$switch,
-	"c|cumulative+" => \$cumulative
+	"c|cumulative+" => \$cumulative,
+	"f|file_configuration=s" => \$config_file;
 );
+
+$config_hash = Config::File::read_config_file($config_file) unless (-e $config_file);
 
 pod2usage({
 	-message => q{Missing string value},
