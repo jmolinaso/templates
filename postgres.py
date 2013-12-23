@@ -5,7 +5,7 @@ import psycopg2
 import os
 import argparse
 
-class DBPostgress:
+class DBPostgres:
     """Class to connect to a postgreSQL and register to recieve notifications
     """
     connection = None
@@ -35,9 +35,10 @@ class DBPostgress:
         if self.connection:
             self.connection.close()
 
-    def execsql(self,query,register=False):
-        """Method to query the database, if register is set to True
-        it will receive changes when something changes in the table
+    def execsql(self,query,data=None,register=False):
+        """Method to interact with the database:
+        (*) if we pass data as tuples then we will proceed with an insert with the values
+        (*) if register is set to True,it will receive changes when something changes in the table.
         """
         if self.arguments.debug:
             print "Excuting query "
@@ -45,14 +46,22 @@ class DBPostgress:
         if register:
             pass
             
-        if self.connection:
-            try:
-                cursor = self.connection.cursor()
-                cursor.executeSQL(query)
-                ret = cursor.fetchall
-                print ret
-            except psycopg2.DatabaseError, e:
-                print 'Error %s' % e
+        if data is not None:
+            if self.connection:
+                try:
+                    cursor = self.connection.cursor()
+                    cursor.executeSQL(query)
+                    ret = cursor.fetchall
+                    print ret
+                except psycopg2.DatabaseError, e:
+                    print 'Error %s' % e
+
+        elif query:
+            pass
+
+    def upload_data(self,table,data):
+        sqlinsert_stmt = "insert into " + table + "("
+        self.execsql(query=sqlinsert_stmt)
 
     def run(self, *args):
         """Excute the class for testing purposes
@@ -69,5 +78,5 @@ class DBPostgress:
         self.disconnect()
 
 if __name__ == '__main__':
-    db = DBPostgress()
+    db = DBPostgres()
     db.run()
