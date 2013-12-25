@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use strict;
+use EV;
 use Config::File;
 use Pod::Usage;
 use Log::Log4perl qw(:levels);
@@ -33,35 +34,43 @@ pod2usage({
 	-verbose => 1
 	}) unless ($string);
 
-# Init the logger
 my $logger = Log::Log4perl->get_logger();
-# The main code here
-$logger->info("Starting $0");
 
+# Register the events and the rutines in case it happens
+my $event_timer = EV::timer 2, 2, sub {
+    $logger->info("is called roughly every 2s (repeat = 2)");
+};
 
-$logger->info("End $0");
+my $event_io = EV::io *STDIN, EV::READ, sub {
+    my ($w, $revents) = @_; # all callbacks receive the watcher and event mask
+    $logger->info("stdin is readable, you entered: ", <STDIN>);
+};
+
+my $event_signal = EV::signal 'QUIT', sub {
+    $logger->info("sigquit received");
+};
+
+my $event_filechange = EV::stat "/etc/passwd", 10, sub {
+    my ($w, $revents) = @_;
+    $logger->info($w->path, " has changed somehow.");
+};
+
+# Main loop, where the magic comes
+EV::run;
 
 __END__
 
 =head1 NAME
 
-commandline: template for creating command line with perl scripts
+eventlistener: template for event listener
 
 =head1 SYNOPSYS
 
-Add here the information that would show the help
+eventlistener.pl -h
 
-commandline.pl [-s string] [-n num] [-w] [-c|-cc] [-d|-v|-q]
+options:
 
-Options:
-	
-    -d, --debug     Show debug level
-    -v, --verbose   Show info level
-    -q, --quiet     Supress all log information
-    -s, --string    String option
-    -n, --number    Number option
-    -w, --switch    Switch setting
-    -c, -cc         Cumulative option
+    -h,--help       Show help
 
 =head1 Author
 
