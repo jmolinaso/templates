@@ -68,9 +68,15 @@ eventlistener: template for event listener
 
 eventlistener.pl -h
 
-options:
-
-    -h,--help       Show help
+Options:
+	
+    -d, --debug     Show debug level
+    -v, --verbose   Show info level
+    -q, --quiet     Supress all log information
+    -s, --string    String option
+    -n, --number    Number option
+    -w, --switch    Switch setting
+    -c, -cc         Cumulative option
 
 =head1 Author
 
