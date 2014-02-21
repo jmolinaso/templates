@@ -12,3 +12,7 @@ Python templates
 ----------------
 * commandline.py:   Python template for command line scripts
 * postgres.py:	    Python class to connect to postgres database
+
+Lisp
+----
+* commandline.lisp  Common Lisp command line script template
