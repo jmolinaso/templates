@@ -29,7 +29,16 @@ $config_hash = Config::File::read_config_file($config_file) if(-e $config_file);
 
 if($daemonize){
   require Proc::Daemon;
-  my $file_log = Log::Log4perl::Appender->new();
+  my $file_log = Log::Log4perl::Appender->new('Log::Dispatch::FileRotate',
+                                              name => 'fileRotation',
+                                              filename => 'output.log',
+                                              mode => 'append',
+                                              DatePattern => 'yyyy-MM-dd');
+  my $layout = Log::Log4perl::Layout::PatternLayout->new(
+                                                         "%d{yyyy-MM-dd HH:mm:ss.SSS Z} [%p] [%F{1}:%L] %m%n");
+  $file_log->layout($layout);
+  $logger->add_appender($file_log);
+  
   Proc::Daemon::Init;
 }
 
