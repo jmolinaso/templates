@@ -6,7 +6,7 @@ use Pod::Usage;
 use Log::Log4perl qw(:levels);
 use Log::Log4perl::CommandLine ':all',
     ':loginit' => [{level => $INFO,
-		    layout => '%d{ISO8601} [%p] [%F{1}:%L] %m%n'}];
+		    layout => '=%d{yyyy-MM-dd HH:mm:ss.SSS Z} [%p] [%F{1}:%L] %m%n'}];
 use Getopt::Long qw(:config bundling auto_version auto_help);
 $main::VERSION = 1.0;		# Define version of current script
 
