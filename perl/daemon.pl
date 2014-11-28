@@ -34,8 +34,7 @@ if($daemonize){
                                               filename => 'output.log',
                                               mode => 'append',
                                               DatePattern => 'yyyy-MM-dd');
-  my $layout = Log::Log4perl::Layout::PatternLayout->new(
-                                                         "%d{yyyy-MM-dd HH:mm:ss.SSS Z} [%p] [%F{1}:%L] %m%n");
+  my $layout = Log::Log4perl::Layout::PatternLayout->new("%d{yyyy-MM-dd HH:mm:ss.SSS Z} [%p] [%F{1}:%L] %m%n");
   $file_log->layout($layout);
   $logger->add_appender($file_log);
   
